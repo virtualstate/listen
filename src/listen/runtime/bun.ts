@@ -1,3 +1,4 @@
+/* c8 ignore start */
 import {dispatchEvent, FetchListenerFn} from "../fetch-listener";
 
 interface BunServer {
@@ -19,12 +20,10 @@ declare var Bun: {
 export async function listen(fn: FetchListenerFn) {
     const server = Bun.serve({
         async fetch(request): Promise<Response> {
-            const { response, settle } = dispatchEvent(
+            return dispatchEvent(
                 request,
                 fn
             );
-            await settle;
-            return response;
         }
     });
     const { hostname } = server;

@@ -1,3 +1,4 @@
+/* c8 ignore start */
 import {h, descendants, toJSON, name, properties} from "@virtualstate/focus";
 import {memo} from "@virtualstate/memo";
 import {isArray} from "../../is";
@@ -167,26 +168,21 @@ export async function test(App: typeof AppType, hostname: string) {
     console.log("Finished JSX server tests");
 }
 
-
 export function ok(
     value: unknown,
-    message?: string,
-    ...conditions: unknown[]
+    message?: string
 ): asserts value;
 export function ok<T>(
     value: unknown,
-    message?: string,
-    ...conditions: unknown[]
+    message?: string
 ): asserts value is T;
 export function ok(
     value: unknown,
-    message?: string,
-    ...conditions: unknown[]
+    message?: string
 ): asserts value {
-    if (conditions.length ? !conditions.every((value) => value) : !value) {
+    if (!value) {
         console.log({
             value,
-            conditions,
             message
         });
         throw new Error(message ?? "Expected value");

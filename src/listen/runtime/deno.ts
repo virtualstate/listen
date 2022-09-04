@@ -1,3 +1,4 @@
+/* c8 ignore start */
 import {FetchListenerFn} from "../fetch-listener";
 import {isPromise} from "../../is";
 

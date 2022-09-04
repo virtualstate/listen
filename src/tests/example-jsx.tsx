@@ -1,4 +1,4 @@
-
+/* c8 ignore start */
 import { listen, toResponse, toAsyncString, Fetch } from "../listen";
 import { h, descendants, name, properties } from "@virtualstate/focus";
 import {ok} from "../is";

@@ -1,59 +1,29 @@
 import {defer} from "@virtualstate/promise";
-import {ok} from "@virtualstate/focus";
 import {isPromise} from "../is";
 
 export interface FetchEvent {
     request: Request;
     respondWith(response: Promise<Response> | Response): void
-    waitUntil?(promise: Promise<unknown>): void;
 }
 
 export interface FetchListenerFn {
     (event: FetchEvent): void;
 }
 
-export function dispatchEvent(request: Request, fn: FetchListenerFn): {
-    response: Promise<Response>,
-    settle: Promise<unknown>
-} {
-    const promises = new Set();
+export async function dispatchEvent(request: Request, fn: FetchListenerFn): Promise<Response> {
     const deferredResponse = defer<Response>();
     const event: FetchEvent = {
         request,
-        respondWith,
-        waitUntil
+        respondWith
     };
-
-    const maybePromise = fn(event);
-
-    if (isPromise(maybePromise)) {
-        waitUntil(maybePromise);
-    }
-
-    return {
-        response: deferredResponse.promise,
-        settle: settleUntil()
-    }
-
+    /* c8 ignore start */
+    void Promise.resolve(fn(event)).catch(error => void error); // TODO: Note or handle, allows for abort
+    /* c8 ignore end */
+    return deferredResponse.promise;
     function respondWith(response: Promise<Response> | Response): void {
         if (isPromise(response)) {
             return void response.then(respondWith);
         }
         deferredResponse.resolve(response)
-    }
-
-    async function settleUntil() {
-        while (promises.size) {
-            const current = [...promises];
-            ok(current.length)
-            await Promise.all(current);
-            for (const promise of current) {
-                promises.delete(promise);
-            }
-        }
-    }
-
-    function waitUntil(promise: Promise<unknown>) {
-        promises.add(promise);
     }
 }

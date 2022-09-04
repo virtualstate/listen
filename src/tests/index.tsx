@@ -1,3 +1,4 @@
+/* c8 ignore start */
 try {
     await import("./server");
     await import("./example");

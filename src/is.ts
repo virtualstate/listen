@@ -1,3 +1,4 @@
+/* c8 ignore start */
 export function isArray<T>(value: unknown): value is T[];
 export function isArray(value: unknown): value is unknown[];
 export function isArray(value: unknown): boolean {
@@ -14,20 +15,17 @@ export function isPromise(input: unknown): input is Promise<unknown> {
 
 export function ok(
     value: unknown,
-    message?: string,
-    ...conditions: unknown[]
+    message?: string
 ): asserts value;
 export function ok<T>(
     value: unknown,
-    message?: string,
-    ...conditions: unknown[]
+    message?: string
 ): asserts value is T;
 export function ok(
     value: unknown,
-    message?: string,
-    ...conditions: unknown[]
+    message?: string
 ): asserts value {
-  if (conditions.length ? !conditions.every((value) => value) : !value) {
+  if (!value) {
     throw new Error(message ?? "Expected value");
   }
 }

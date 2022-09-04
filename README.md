@@ -6,11 +6,11 @@ Fetch listener
 
 ### Support
 
- ![Node.js supported](https://img.shields.io/badge/node-%3E%3D16.0.0-blue) ![Deno supported](https://img.shields.io/badge/deno-%3E%3D1.17.0-blue) ![Bun supported](https://img.shields.io/badge/bun-%3E%3D0.1.11-blue) 
+ ![Node.js supported](https://img.shields.io/badge/node-%3E%3D18.7.0-blue) ![Deno supported](https://img.shields.io/badge/deno-%3E%3D1.17.0-blue) ![Bun supported](https://img.shields.io/badge/bun-%3E%3D0.1.11-blue) 
 
 ### Test Coverage
 
- ![89.2%25 lines covered](https://img.shields.io/badge/lines-89.2%25-brightgreen) ![89.2%25 statements covered](https://img.shields.io/badge/statements-89.2%25-brightgreen) ![90.62%25 functions covered](https://img.shields.io/badge/functions-90.62%25-brightgreen) ![77.65%25 branches covered](https://img.shields.io/badge/branches-77.65%25-yellow)
+ ![98.2%25 lines covered](https://img.shields.io/badge/lines-98.2%25-brightgreen) ![98.2%25 statements covered](https://img.shields.io/badge/statements-98.2%25-brightgreen) ![96.66%25 functions covered](https://img.shields.io/badge/functions-96.66%25-brightgreen) ![95.34%25 branches covered](https://img.shields.io/badge/branches-95.34%25-brightgreen)
 
 [//]: # (badges)
 

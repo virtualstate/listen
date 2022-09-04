@@ -10,6 +10,7 @@ export interface FetchOptions extends RequestInit {
     isRetry?: boolean;
 }
 
+/* c8 ignore start */ // flaky servers only
 class FetchResponseError extends Error {
 
     response: Response;
@@ -21,17 +22,13 @@ class FetchResponseError extends Error {
         this.status = response.status;
     }
 }
+/* c8 ignore end */
 
 export async function *Fetch(options: FetchOptions): AsyncIterable<unknown> {
-    const { isRetry, retries, url } = options;
-    if (isRetry) {
-        console.log("Retrying fetch");
-    }
-
-    console.log(url, options);
-
+    const { retries, url } = options;
     const response = await fetch(url.toString(), options);
 
+    /* c8 ignore start */ // flaky servers only
     if (!response.ok) {
         if (typeof retries !== "number") {
             return yield <Fetch {...options} retries={DEFAULT_RETRIES} isRetry />;
@@ -41,6 +38,7 @@ export async function *Fetch(options: FetchOptions): AsyncIterable<unknown> {
             throw new FetchResponseError(response);
         }
     }
+    /* c8 ignore end */
 
     for await (const string of toAsyncString(response)) {
         yield * parsePart(string);

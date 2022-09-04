@@ -4,6 +4,7 @@ export function toAsyncString(input: Body): TheAsyncThing<string> {
     return anAsyncThing(createIterable());
 
     function createIterable() {
+        /* c8 ignore start */ // bun only
         if (!input.body?.pipeThrough) {
             return {
                 async *[Symbol.asyncIterator]() {
@@ -11,6 +12,7 @@ export function toAsyncString(input: Body): TheAsyncThing<string> {
                 }
             }
         }
+        /* c8 ignore end */
         return {
             async *[Symbol.asyncIterator]() {
                 const stream = input.body.pipeThrough(new TextDecoderStream());
