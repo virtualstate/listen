@@ -65,14 +65,11 @@ export async function listen(fn: FetchListenerFn) {
     async function onMessage(message: IncomingMessage, serverResponse: ServerResponse) {
         let sentResponse = false;
         try {
-            const { response, settle } = dispatchEvent(
+            const response = await dispatchEvent(
                 fromIncomingMessage(message, getHostname(server)),
                 fn
             );
-            await Promise.all([
-                response.then(sendResponse),
-                settle
-            ]);
+            await sendResponse(response);
         } catch (error) {
             console.error(error);
             await sendResponse(
