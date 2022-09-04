@@ -74,7 +74,7 @@ export async function listen(fn: FetchListenerFn) {
                 settle
             ]);
         } catch (error) {
-            console.log(error);
+            console.error(error);
             await sendResponse(
                 new Response(undefined, {
                     status: 500
