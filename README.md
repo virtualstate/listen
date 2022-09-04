@@ -33,3 +33,43 @@ if (text !== "Hello!") throw new Error("Expected Hello!");
 
 await close();
 ```
+
+## JSX
+
+```jsx
+import { listen, toResponse, toAsyncString, Fetch } from "@virtualstate/listen";
+import { h, descendants, name, properties } from "@virtualstate/focus";
+
+async function *App({ request }) {
+    if (request.method === "POST") {
+        const body = JSON.parse(
+            await toAsyncString(request)
+        );
+        yield <echo {...body} />
+    }
+}
+
+const { url, close } = await listen(
+    event => event.respondWith(
+        toResponse(<App request={event.request} />)
+    )
+);
+
+const random = Math.random()
+const {
+    echo: [echo]
+} = descendants(
+    <Fetch 
+        url={url}
+        method="POST"
+        body={JSON.stringify({
+            random
+        })}
+    />
+).group(name);
+
+const body = properties(await echo);
+console.log(body);
+
+if (body.random !== random) throw new Error("Expected body to contain random")
+```

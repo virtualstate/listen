@@ -147,19 +147,21 @@ export async function test(App: typeof AppType, hostname: string) {
     }
 
     {
-        const [body] = await descendants(
+        const random = Math.random();
+        const {
+            "echo-body": [echo]
+        } = descendants(
             <Fetch
                 url={new URL("/example/post", hostname)}
                 method="POST"
                 body={JSON.stringify({
-                    a: "1"
+                    a: random
                 })}
             />
-        ).filter(node => name(node) === "echo-body")
-        console.log({ body });
-        ok(body);
-        const { a } = properties(body);
-        ok(a === "1");
+        ).group(name)
+        const { a } = properties(await echo);
+        console.log({ a, random });
+        ok(a === random);
     }
 
     console.log("Finished JSX server tests");

@@ -28,6 +28,8 @@ export async function *Fetch(options: FetchOptions): AsyncIterable<unknown> {
         console.log("Retrying fetch");
     }
 
+    console.log(url, options);
+
     const response = await fetch(url.toString(), options);
 
     if (!response.ok) {
