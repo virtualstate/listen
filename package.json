@@ -1,6 +1,6 @@
 {
   "name": "@virtualstate/listen",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "main": "./esnext/index.js",
   "module": "./esnext/index.js",
   "types": "./esnext/index.d.ts",
@@ -38,8 +38,7 @@
     "uuid": "^8.3.2",
     "whatwg-url": "^9.1.0"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@opennetwork/http-representation": "^3.0.0",
     "@opennetwork/http-representation-node": "^3.0.0",
