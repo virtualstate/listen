@@ -1,6 +1,6 @@
 {
   "name": "@virtualstate/listen",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha.0",
   "main": "./esnext/index.js",
   "module": "./esnext/index.js",
   "types": "./esnext/index.d.ts",
@@ -51,6 +51,8 @@
     "@types/uuid": "^8.3.3",
     "@types/whatwg-url": "^8.2.1",
     "@virtualstate/dom": "^2.46.0",
+    "@virtualstate/focus": "^1.4.9",
+    "@virtualstate/promise": "^1.2.1",
     "@virtualstate/examples": "^2.46.0",
     "@virtualstate/fringe": "^2.46.1",
     "@virtualstate/hooks": "^2.46.0",

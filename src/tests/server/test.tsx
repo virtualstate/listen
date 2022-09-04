@@ -1,10 +1,9 @@
-import {h, descendants, isString, toJSON, children, name, properties} from "@virtualstate/focus";
+import {h, descendants, toJSON, name, properties} from "@virtualstate/focus";
 import {memo} from "@virtualstate/memo";
 import {isArray} from "../../is";
 import {union} from "@virtualstate/union";
 import {Fetch, toAsyncString} from "../../listen";
 import type { App as AppType } from "./index";
-
 
 export async function test(App: typeof AppType, hostname: string) {
     const url = new URL("/test", hostname).toString();
@@ -190,4 +189,8 @@ export function ok(
         });
         throw new Error(message ?? "Expected value");
     }
+}
+
+function isString(value: unknown): value is string {
+    return typeof value === "string";
 }
