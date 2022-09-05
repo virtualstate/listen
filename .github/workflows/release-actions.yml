@@ -35,6 +35,16 @@ jobs:
       - run: yarn test:deno
       - run: yarn test:bun
         continue-on-error: true
+      - run: yarn test:node
+        env:
+          PORT: 3400
+      - run: yarn test:deno
+        env:
+          PORT: 3400
+      - run: yarn test:bun
+        continue-on-error: true
+        env:
+          PORT: 3400
       - name: Package Registry Publish - npm
         run: |
           git config user.name "${{ github.actor }}"

@@ -25,8 +25,18 @@ jobs:
           yarn install
           bun install
       - run: yarn build
-      # yarn coverage === c8 + yarn test
+      # yarn coverage === c8 + yarn test:node
       - run: yarn coverage
       - run: yarn test:deno
       - run: yarn test:bun
         continue-on-error: true
+      - run: yarn test:node
+        env:
+          PORT: 3400
+      - run: yarn test:deno
+        env:
+          PORT: 3400
+      - run: yarn test:bun
+        continue-on-error: true
+        env:
+          PORT: 3400
