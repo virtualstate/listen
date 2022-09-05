@@ -1,7 +1,6 @@
 /* c8 ignore start */
-import { listen, toResponse, toAsyncString, Fetch } from "../listen";
+import { listen, toResponse, Fetch } from "../listen";
 import { h, descendants, name, properties } from "@virtualstate/focus";
-import {ok} from "../is";
 
 interface RequestOptions {
     request: Request
@@ -12,13 +11,13 @@ interface RequestOptions {
         if (request.method === "POST") {
             for (let tries = 0; ; tries += 1) {
                 try {
-                    // console.log({ request, bodyUsed: request.bodyUsed });
-                    const body = JSON.parse(
-                        await toAsyncString(request)
-                    );
-                    yield <echo tries={tries} {...body} />
+                    console.log({ request, bodyUsed: request.bodyUsed, tries });
+                    const bodyText = await request.text();
+                    const body = JSON.parse(bodyText)
+                    yield <echo tries={tries} text={bodyText} {...body} />
                     return;
-                } catch {
+                } catch (error) {
+                    console.log(error);
                     await new Promise<void>(resolve => setTimeout(resolve, 10));
                 }
             }

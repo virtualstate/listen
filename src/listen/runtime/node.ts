@@ -30,6 +30,14 @@ function fromIncomingMessage(message: IncomingMessage, baseUrl?: string) {
     });
 }
 
+function getPort() {
+    const env = process.env.PORT;
+    if (env && /^\d+$/.test(env)) {
+        return +env;
+    }
+    return 0; // random;
+}
+
 function getHostname(server: Server) {
     const addressInfo = server.address();
 
@@ -44,13 +52,11 @@ function getHostname(server: Server) {
 }
 
 export async function listen(fn: FetchListenerFn) {
-
     const server = createServer((message, response) => {
         void onMessage(message, response) // Allow throwing unhandled rejection
     })
 
-    await new Promise<void>(resolve => server.listen(0, resolve));
-
+    await new Promise<void>(resolve => server.listen(getPort(), resolve));
     const url = getHostname(server);
 
     return {

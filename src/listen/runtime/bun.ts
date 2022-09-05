@@ -13,8 +13,20 @@ interface BunFetchOptions {
 }
 
 declare var Bun: {
+    env: Record<string, string | undefined>
     exit?(code: number): void;
     serve(options: BunFetchOptions): BunServer
+}
+
+function getPort() {
+    try {
+        const env = Bun.env["PORT"];
+        if (env && /^\d+$/.test(env)) {
+            return +env;
+        }
+    } catch {}
+    // Example 60019 or 65535
+    return 50000 + Math.round(20000 * Math.random());
 }
 
 export async function listen(fn: FetchListenerFn) {
@@ -24,7 +36,8 @@ export async function listen(fn: FetchListenerFn) {
                 request,
                 fn
             );
-        }
+        },
+        port: getPort()
     });
     const { hostname } = server;
     return {

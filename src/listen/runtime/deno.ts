@@ -24,12 +24,25 @@ interface DenoHttpConnection extends AsyncIterable<DenoHTTPEvent> {
 }
 
 declare var Deno: {
+    env: {
+        get(name: string): string | undefined;
+    }
     listen(options: { port: number }): DenoServer
     serveHttp(connection: DenoConnection): DenoHttpConnection
 }
 
+function getPort() {
+    try {
+        const env = Deno.env.get("PORT");
+        if (env && /^\d+$/.test(env)) {
+            return +env;
+        }
+    } catch {}
+    return 0;
+}
+
 export async function listen(fn: FetchListenerFn) {
-    const server = Deno.listen({ port: 0 });
+    const server = Deno.listen({ port: getPort() });
     const hostname = `http://0.0.0.0:${server.addr.port}`
     const abortController = new AbortController();
     const onComplete = (async function watch() {
