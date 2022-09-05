@@ -8,13 +8,15 @@ interface RequestOptions {
 
 {
     async function *App({ request }: RequestOptions) {
+        const texts = [];
         if (request.method === "POST") {
             for (let tries = 0; ; tries += 1) {
                 try {
                     console.log({ request, bodyUsed: request.bodyUsed, tries });
-                    const bodyText = await request.text();
-                    const body = JSON.parse(bodyText)
-                    yield <echo tries={tries} text={bodyText} {...body} />
+                    const text = await request.text();
+                    texts.push(text)
+                    const body = JSON.parse(text)
+                    yield <echo tries={tries} texts={texts} {...body} />
                     return;
                 } catch (error) {
                     console.log(error);
