@@ -97,7 +97,10 @@ import {fromBody} from "../../listen";
         const root = design({
             async: true // If we want the design to be observable
         });
-        const { h } = root;
+        let { h } = root;
+
+        ({ h } = <html />);
+
         event.respondWith(toResponse(root));
 
         const head = (
