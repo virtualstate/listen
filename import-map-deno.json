@@ -6,6 +6,7 @@
     "@virtualstate/examples": "https://cdn.skypack.dev/@virtualstate/examples",
     "@virtualstate/fringe": "https://cdn.skypack.dev/@virtualstate/fringe",
     "@virtualstate/focus": "https://cdn.skypack.dev/@virtualstate/focus",
+    "@virtualstate/navigation": "https://cdn.skypack.dev/@virtualstate/navigation",
     "@virtualstate/hooks": "https://cdn.skypack.dev/@virtualstate/hooks",
     "@virtualstate/memo": "https://cdn.skypack.dev/@virtualstate/memo",
     "@virtualstate/hooks-extended": "https://cdn.skypack.dev/@virtualstate/hooks-extended",
