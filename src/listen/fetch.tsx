@@ -1,6 +1,5 @@
-import {toAsyncString} from "./body-string";
-import {h} from "@virtualstate/focus";
-import {isArray, ok} from "../is";
+import {toJSON} from "@virtualstate/focus";
+import {fromBody} from "./body";
 
 const DEFAULT_RETRIES = 3;
 
@@ -24,38 +23,52 @@ class FetchResponseError extends Error {
 }
 /* c8 ignore end */
 
-export async function *Fetch(options: FetchOptions): AsyncIterable<unknown> {
-    const { retries, url } = options;
-    const response = await fetch(url.toString(), options);
-
-    /* c8 ignore start */ // flaky servers only
-    if (!response.ok) {
-        if (typeof retries !== "number") {
-            return yield <Fetch {...options} retries={DEFAULT_RETRIES} isRetry />;
-        } else if (retries > 0) {
-            return yield <Fetch {...options} retries={retries - 1} isRetry />;
-        } else {
-            throw new FetchResponseError(response);
-        }
-    }
-    /* c8 ignore end */
-
-    for await (const string of toAsyncString(response)) {
-        yield * parsePart(string);
+export async function *Fetch(options: FetchOptions, input?: unknown): AsyncIterable<unknown> {
+    if ("body" in options || options.body) {
+        return yield * withOptions(options);
     }
 
-    function parsePart(part: string) {
-        if (part.startsWith(",")) {
-            part = part.slice(1);
-        }
-        if (!part.startsWith("[")) {
-            part = `[${part}`;
-        }
-        if (!part.endsWith("]")) {
-            part = `${part}]`
-        }
-        const parsed = JSON.parse(part);
-        ok(isArray(parsed));
-        return parsed;
+    const method = (options.method ?? "GET").toString();
+
+    if (method !== "PUT" && method !== "POST" && method !== "PATCH") {
+        return yield * withOptions(options);
     }
+
+    let fetched = false;
+    for await (const snapshot of toJSON(input)) {
+        yield * withOptions({
+            ...options,
+            body: snapshot
+        })
+        fetched = true;
+    }
+
+    if (!fetched) {
+        yield * withOptions(options);
+    }
+
+    async function * withOptions(options: FetchOptions): AsyncIterable<unknown> {
+        const { url, retries } = options;
+        const response = await fetch(url.toString(), options);
+        /* c8 ignore start */ // flaky servers only
+        if (!response.ok) {
+            if (typeof retries !== "number") {
+                return yield * withOptions({
+                    ...options,
+                    retries: DEFAULT_RETRIES
+                })
+            } else if (retries > 0) {
+                return yield * withOptions({
+                    ...options,
+                    retries: retries - 1,
+                    isRetry: true
+                });
+            } else {
+                throw new FetchResponseError(response);
+            }
+        }
+        /* c8 ignore end */
+        yield * fromBody(response);
+    }
+
 }

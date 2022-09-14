@@ -1,4 +1,6 @@
-function toPullUnderlyingSource(iterable: AsyncIterable<unknown>): UnderlyingSource {
+import {toJSON} from "@virtualstate/focus";
+
+function createPullUnderlyingSourceFromIterable(iterable: AsyncIterable<unknown>): UnderlyingSource {
     const encoder = new TextEncoder();
     let iterator: AsyncIterator<unknown>;
     return {
@@ -23,7 +25,29 @@ function toPullUnderlyingSource(iterable: AsyncIterable<unknown>): UnderlyingSou
     }
 }
 
-export function toStream(iterable: AsyncIterable<unknown>) {
-    const source = toPullUnderlyingSource(iterable);
+/**
+ * @internal
+ */
+export function createReadableStreamFromIterable(iterable: AsyncIterable<unknown>) {
+    const source = createPullUnderlyingSourceFromIterable(iterable);
     return new ReadableStream(source);
+}
+
+async function *toJSONArray(parts: AsyncIterable<string>) {
+    yield "[";
+    let first = true;
+    for await (const part of parts) {
+        if (!first) yield ",";
+        first = false;
+        yield part;
+    }
+    yield "]";
+}
+
+export function toReadableStream(node: unknown) {
+    return createReadableStreamFromIterable(
+        toJSONArray(
+            toJSON(node)
+        )
+    )
 }

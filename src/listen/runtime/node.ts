@@ -1,5 +1,5 @@
 import type {IncomingMessage} from "http";
-import {toStream} from "../stream";
+import {createReadableStreamFromIterable} from "../stream";
 import {isArray, ok} from "../../is";
 import {dispatchEvent, FetchListenerFn} from "../fetch-listener";
 import {createServer, Server, ServerResponse} from "http";
@@ -11,7 +11,7 @@ function fromIncomingMessage(message: IncomingMessage, baseUrl?: string) {
     );
     let body;
     if (message.method !== "GET" && message.method !== "HEAD") {
-        body = toStream(message);
+        body = createReadableStreamFromIterable(message);
     }
     const headers = new Headers();
     for (const [key, value] of Object.entries(message.headers)) {
