@@ -77,7 +77,7 @@ import {fromBody} from "../../listen";
 
     const f = h;
 
-    const { url, close } = await listen( event => {
+    const { url, close } = await listen( async event => {
         const { request } = event;
 
 
@@ -94,59 +94,80 @@ import {fromBody} from "../../listen";
         }
 
 
-        const root = design({
-            async: true // If we want the design to be observable
-        });
-        let { h } = root;
+        async function run() {
+            const root = design({
+                async: true // If we want the design to be observable
+            });
+            let { h } = root;
 
-        ({ h } = <html />);
+            // This defines a top level node and replaces the JSX root context
+            ({ h } = <html />);
 
-        event.respondWith(toResponse(root));
+            event.respondWith(toResponse(root));
 
-        const head = (
-            <head>
-                <title>{request.url}</title>
-            </head>
-        );
+            const head = (
+                <head>
+                    <title>{request.url}</title>
+                </head>
+            );
 
-        const body = (
-            <body>
+            const body = (
+                <body>
 
-            </body>
-        );
+                </body>
+            );
 
-        // By this point both body and head are available to the response.
-        //
-        // Updates to them through reference will reflect in the response
+            // By this point both body and head are available to the response.
+            //
+            // Updates to them through reference will reflect in the response
 
-        {
-            // In this scope we are adding elements inside the body
-            const { h } = body;
+            {
+                // In this scope we are adding elements inside the body
+                const { h } = body;
 
-            <h1>Hello!</h1>;
+                <h1>Hello!</h1>;
 
-            <main>
-                <article>
-                    This is defined within JSX
-                </article>
-                <article>
-                    This is another article
-                </article>
+                <main>
+                    <article>
+                        This is defined within JSX
+                    </article>
+                    <article>
+                        This is another article
+                    </article>
 
-                <App /> {/* We can define a component! */}
+                    <App /> {/* We can define a component! */}
 
-            </main>;
+                </main>;
 
-            <footer>
-                This is a footer
-            </footer>
+                <footer>
+                    This is a footer
+                </footer>
 
+            }
+
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            {
+                const { h } = head;
+
+                <link href={new URL("update", url)} name="update" />;
+
+                await new Promise(resolve => setTimeout(resolve, 100));
+
+                <link href={new URL("update/2", url)} name="update/2" />;
+
+            }
+
+            // await new Promise(resolve => setTimeout(resolve, 300));
+
+
+            // Close must be called to finish the response
+            root.close();
+
+            console.log("Closing designer");
         }
 
-        // Close must be called to finish the response
-        root.close();
-
-        console.log("Closing designer");
+        return run().catch(console.error).then(() => console.log("done"));
     });
     console.log("Have paired server", { url });
 
@@ -157,8 +178,6 @@ import {fromBody} from "../../listen";
     for await (const snapshot of toJSON(<Fetch url={url} />)) {
         console.log(snapshot);
     }
-
-
 
     await close();
 }
