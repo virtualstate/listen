@@ -61,9 +61,9 @@ import {fromBody} from "../../listen";
         </Fetch>
     );
     await logProperties(
-        <Fetch url={url} method="PUT">
-            <Fetch url={url} method="POST">
-                <Fetch url={url} />
+        <Fetch url={url} method="PUT" credentials="omit">
+            <Fetch url={url} method="POST" credentials="omit">
+                <Fetch url={url} credentials="omit" />
             </Fetch>
         </Fetch>
     );
