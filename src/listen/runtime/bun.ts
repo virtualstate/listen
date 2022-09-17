@@ -52,7 +52,7 @@ export async function listen(fn: FetchListenerFn) {
     return {
         url,
         close,
-        fetch: server.fetch ?? createFetch(url, fn)
+        fetch: server.fetch?.bind(server) ?? createFetch(url, fn)
     } as const;
     async function close() {
         await server.stop();
