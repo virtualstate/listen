@@ -20,7 +20,7 @@ import {fromBody} from "../../listen";
         const { method } = request;
         const { body: [body] } = fromBody(request).group(name);
 
-        event.respondWith(toResponse(<Body />));
+        return toResponse(<Body />);
 
         async function *Body() {
             if (method === "POST") {
@@ -79,8 +79,6 @@ import {fromBody} from "../../listen";
 
     const { url, close } = await listen( async event => {
         const { request } = event;
-
-
 
         async function *App() {
             const h = f; // We are ensuring we are using a generic h

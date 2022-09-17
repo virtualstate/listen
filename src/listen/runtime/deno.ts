@@ -58,9 +58,17 @@ export async function listen(fn: FetchListenerFn) {
                 } catch { }
             })
             for await (const event of http) {
-                const maybePromise = fn(event);
-                if (isPromise(maybePromise)) {
-                    maybePromise.catch(error => void error);
+                const maybe = fn(event);
+                if (isPromise(maybe)) {
+                    void maybe
+                        .then(result => {
+                            if (result instanceof Response) {
+                                void event.respondWith(result);
+                            }
+                        })
+                        .catch(error => void error);
+                } else if (maybe instanceof Response) {
+                    void event.respondWith(maybe)?.catch?.(error => void error)
                 }
             }
         }

@@ -7,7 +7,7 @@ export interface FetchEvent {
 }
 
 export interface FetchListenerFn {
-    (event: FetchEvent): void;
+    (event: FetchEvent): void | Response | Promise<void | Response>;
 }
 
 export async function dispatchEvent(request: Request, fn: FetchListenerFn): Promise<Response> {
@@ -16,10 +16,24 @@ export async function dispatchEvent(request: Request, fn: FetchListenerFn): Prom
         request,
         respondWith
     };
+    const maybe = fn(event);
+
     /* c8 ignore start */
-    void Promise.resolve(fn(event)).catch(error => void error); // TODO: Note or handle, allows for abort
+    if (isPromise(maybe)) {
+        maybe
+            .then(result => {
+                if (result instanceof Response) {
+                    respondWith(result);
+                }
+            })
+            .catch(error => void error); // TODO: Note or handle, allows for abort
+    } else if (maybe instanceof Response) {
+        respondWith(maybe);
+    }
     /* c8 ignore end */
+
     return deferredResponse.promise;
+
     function respondWith(response: Promise<Response> | Response): void {
         if (isPromise(response)) {
             return void response.then(respondWith);

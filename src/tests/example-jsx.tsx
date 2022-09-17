@@ -27,9 +27,7 @@ interface RequestOptions {
     }
 
     const { url, close } = await listen(
-        event => event.respondWith(
-            toResponse(<App request={event.request} />)
-        )
+        event => toResponse(<App request={event.request} />)
     );
 
     const random = Math.random()
