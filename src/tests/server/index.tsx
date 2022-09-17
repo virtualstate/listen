@@ -47,8 +47,10 @@ await test(App, url);
 
 declare var Bun: unknown;
 if (typeof Bun !== "undefined") {
-    if (!isInMemoryFetch(fetch)) {
+    if (!isInMemoryFetch(fetch) || process.env.BUN_IN_MEMORY_FETCH) {
+        console.log("Starting in memory tests", isInMemoryFetch(fetch));
         await test(App, url, fetch);
+        console.log("Finished in memory tests");
     }
 } else {
     console.log("Starting in memory tests", isInMemoryFetch(fetch));

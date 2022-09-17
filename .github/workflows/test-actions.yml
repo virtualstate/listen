@@ -30,6 +30,8 @@ jobs:
       - run: yarn test:deno
       - run: yarn test:bun
         continue-on-error: true
+        env:
+          BUN_IN_MEMORY_FETCH: true
       - name: test:node with PORT
         run: yarn test:node
         env:
@@ -43,3 +45,4 @@ jobs:
         continue-on-error: true
         env:
           PORT: 3400
+          BUN_IN_MEMORY_FETCH: true
