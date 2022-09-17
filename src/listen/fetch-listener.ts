@@ -44,6 +44,16 @@ export function createFetch(baseURL: string, fn: FetchListenerFn) {
             input,
             init
         );
+        if (!request.headers.has("Host")) {
+            const { host } = new URL(request.url);
+            request.headers.set("Host", host);
+        }
+        if (!request.headers.has("User-Agent")) {
+            request.headers.set(
+                "User-Agent",
+                "internal"
+            );
+        }
         return dispatchEvent(
             request,
             fn
