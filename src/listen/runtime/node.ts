@@ -1,7 +1,7 @@
 import type {IncomingMessage} from "http";
 import {createReadableStreamFromIterable} from "../stream";
 import {isArray, ok} from "../../is";
-import {dispatchEvent, FetchListenerFn} from "../fetch-listener";
+import {createFetch, dispatchEvent, FetchListenerFn} from "../fetch-listener";
 import {createServer, Server, ServerResponse} from "http";
 
 function fromIncomingMessage(message: IncomingMessage, baseUrl?: string) {
@@ -61,7 +61,8 @@ export async function listen(fn: FetchListenerFn) {
 
     return {
         url,
-        close
+        close,
+        fetch: createFetch(url, fn)
     } as const;
 
     function close() {

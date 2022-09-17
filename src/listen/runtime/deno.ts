@@ -1,5 +1,5 @@
 /* c8 ignore start */
-import {FetchListenerFn} from "../fetch-listener";
+import {createFetch, dispatchEvent, FetchListenerFn} from "../fetch-listener";
 import {isPromise} from "../../is";
 
 interface DenoConnection {
@@ -43,7 +43,7 @@ function getPort() {
 
 export async function listen(fn: FetchListenerFn) {
     const server = Deno.listen({ port: getPort() });
-    const hostname = `http://0.0.0.0:${server.addr.port}`
+    const url = `http://0.0.0.0:${server.addr.port}`
     const abortController = new AbortController();
     const onComplete = (async function watch() {
         for await (const connection of server) {
@@ -75,9 +75,11 @@ export async function listen(fn: FetchListenerFn) {
     })();
     onComplete.catch(error => void error);
     return {
-        url: hostname,
-        close
+        url,
+        close,
+        fetch: createFetch(url, fn)
     } as const;
+
     async function close() {
         server.close();
         abortController.abort();

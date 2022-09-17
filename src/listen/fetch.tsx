@@ -1,12 +1,16 @@
 import {toJSON} from "@virtualstate/focus";
 import {fromBody} from "./body";
+import {FetchFn} from "./fetch-listener";
 
 const DEFAULT_RETRIES = 3;
+
+const globalFetch = fetch;
 
 export interface FetchOptions extends RequestInit {
     url: URL | string
     retries?: number;
     isRetry?: boolean;
+    fetch?: FetchFn;
 }
 
 /* c8 ignore start */ // flaky servers only
@@ -48,7 +52,7 @@ export async function *Fetch(options: FetchOptions, input?: unknown): AsyncItera
     }
 
     async function * withOptions(options: FetchOptions): AsyncIterable<unknown> {
-        const { url, retries } = options;
+        const { url, retries, fetch = globalFetch } = options;
         const response = await fetch(url.toString(), options);
         /* c8 ignore start */ // flaky servers only
         if (!response.ok) {

@@ -1,5 +1,5 @@
 import {defer} from "@virtualstate/promise";
-import {isPromise} from "../is";
+import {isPromise, ok} from "../is";
 
 export interface FetchEvent {
     request: Request;
@@ -8,6 +8,47 @@ export interface FetchEvent {
 
 export interface FetchListenerFn {
     (event: FetchEvent): void | Response | Promise<void | Response>;
+}
+
+const globalFetch = fetch;
+export type FetchFn = typeof globalFetch;
+
+const InMemoryFetch = Symbol.for("@virtualstate/listen/fetch/in-memory");
+
+function assertFetch(fetch: FetchFn): asserts fetch is FetchFn & { [InMemoryFetch]?: unknown } {
+    ok(fetch);
+}
+
+export function isInMemoryFetch(fetch: FetchFn): boolean {
+    assertFetch(fetch);
+    return !!fetch[InMemoryFetch];
+}
+
+export function createFetch(baseURL: string, fn: FetchListenerFn) {
+    defineInMemory(fetchInMemory);
+    return fetchInMemory;
+
+    function defineInMemory(fn: FetchFn) {
+        assertFetch(fn);
+        fn[InMemoryFetch] = true;
+    }
+
+    async function fetchInMemory(input: RequestInfo | URL, init?: RequestInit) {
+        if (typeof input === "string") {
+            input = new URL(
+                input,
+                baseURL
+            );
+        }
+        const request = new Request(
+            input,
+            init
+        );
+        return dispatchEvent(
+            request,
+            fn
+        );
+    }
 }
 
 export async function dispatchEvent(request: Request, fn: FetchListenerFn): Promise<Response> {
