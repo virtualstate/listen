@@ -4,7 +4,7 @@ import {listen} from "../listen";
 
 {
 
-    const { url, close } = await listen(
+    const { url, close, fetch } = await listen(
         event => event.respondWith(new Response("Hello!"))
     );
 
@@ -22,7 +22,7 @@ import {listen} from "../listen";
 
 {
 
-    const { url, close } = await listen(
+    const { url, close, fetch } = await listen(
         () => new Response("Hello!")
     );
 

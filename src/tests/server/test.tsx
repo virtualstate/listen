@@ -81,7 +81,7 @@ export async function test(App: typeof AppType, hostname: string, fetch = global
 
         {
             const left = await toJSON(<App request={new Request(url)} />);
-            const right = await toJSON(<Fetch url={url} />)
+            const right = await toJSON(<Fetch url={url} fetch={fetch} />)
             console.log(left, right);
             ok(left === right);
         }

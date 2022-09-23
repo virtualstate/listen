@@ -15,7 +15,7 @@ import {fromBody} from "../../listen";
 
 {
 
-    const { url, close } = await listen( event => {
+    const { url, close, fetch } = await listen( event => {
         const { request } = event;
         const { method } = request;
         const { body: [body] } = fromBody(request).group(name);
@@ -53,17 +53,17 @@ import {fromBody} from "../../listen";
     }
 
     await logProperties(
-        <Fetch url={url} />
+        <Fetch url={url} fetch={fetch} />
     );
     await logProperties(
-        <Fetch url={url} method="POST">
-            <Fetch url={url} />
+        <Fetch url={url} method="POST" fetch={fetch}>
+            <Fetch url={url} fetch={fetch} />
         </Fetch>
     );
     await logProperties(
-        <Fetch url={url} method="PUT" credentials="omit">
-            <Fetch url={url} method="POST" credentials="omit">
-                <Fetch url={url} credentials="omit" />
+        <Fetch url={url} method="PUT" credentials="omit" fetch={fetch}>
+            <Fetch url={url} method="POST" credentials="omit" fetch={fetch}>
+                <Fetch url={url} credentials="omit" fetch={fetch} />
             </Fetch>
         </Fetch>
     );
@@ -77,7 +77,7 @@ import {fromBody} from "../../listen";
 
     const f = h;
 
-    const { url, close } = await listen( async event => {
+    const { url, close, fetch } = await listen( async event => {
         const { request } = event;
 
         async function *App() {
@@ -173,7 +173,7 @@ import {fromBody} from "../../listen";
     //     console.log(snapshot);
     // }
     //
-    for await (const snapshot of toJSON(<Fetch url={url} />)) {
+    for await (const snapshot of toJSON(<Fetch url={url} fetch={fetch} />)) {
         console.log(snapshot);
     }
 

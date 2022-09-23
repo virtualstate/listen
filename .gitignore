@@ -4,3 +4,6 @@ node_modules
 esnext
 coverage
 .env
+/test-results/
+/playwright-report/
+/playwright/.cache/

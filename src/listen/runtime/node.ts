@@ -1,7 +1,7 @@
 import type {IncomingMessage} from "http";
 import {createReadableStreamFromIterable} from "../stream";
 import {isArray, ok} from "../../is";
-import {createFetch, dispatchEvent, FetchListenerFn} from "../fetch-listener";
+import {createFetch, dispatchEvent, FetchListener, FetchListenerFn} from "../fetch-listener";
 import {createServer, Server, ServerResponse} from "http";
 
 function fromIncomingMessage(message: IncomingMessage, baseUrl?: string) {
@@ -51,12 +51,13 @@ function getHostname(server: Server) {
     return `http://0.0.0.0:${port}`;
 }
 
-export async function listen(fn: FetchListenerFn) {
+export async function listen(fn: FetchListenerFn): Promise<FetchListener> {
     const server = createServer((message, response) => {
         void onMessage(message, response) // Allow throwing unhandled rejection
     })
 
     await new Promise<void>(resolve => server.listen(getPort(), resolve));
+
     const url = getHostname(server);
 
     return {
@@ -66,7 +67,13 @@ export async function listen(fn: FetchListenerFn) {
     } as const;
 
     function close() {
-        return new Promise(resolve => server.close(resolve));
+        return new Promise<void>((resolve, reject) => server.close(error => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve();
+            }
+        }));
     }
 
     async function onMessage(message: IncomingMessage, serverResponse: ServerResponse) {

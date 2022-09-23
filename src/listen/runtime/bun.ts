@@ -1,6 +1,6 @@
 /* c8 ignore start */
 import {createFetch, dispatchEvent, FetchFn, FetchListenerFn} from "../fetch-listener";
-import {ok} from "../../is";
+import {randomPort} from "./random-port";
 
 interface BunServer {
     stop(): void;
@@ -28,8 +28,7 @@ function getPort() {
             return +env;
         }
     } catch {}
-    // Example 60019 or 65535
-    return 50000 + Math.round(20000 * Math.random());
+    return randomPort();
 }
 
 export async function listen(fn: FetchListenerFn) {
@@ -47,7 +46,7 @@ export async function listen(fn: FetchListenerFn) {
 
     const { port } = server
 
-    const url = `http://0.0.0.0:${port}`;
+    const url = `http://${hostname}:${port}`;
 
     return {
         url,

@@ -579,6 +579,14 @@
   dependencies:
     pure-uuid "^1.6.0"
 
+"@playwright/test@^1.26.0":
+  version "1.26.0"
+  resolved "https://registry.yarnpkg.com/@playwright/test/-/test-1.26.0.tgz#d0c4a7ffaa7df5b4a63e0d8dea133fdb1d6c5aef"
+  integrity sha512-D24pu1k/gQw3Lhbpc38G5bXlBjGDrH5A52MsrH12wz6ohGDeQ+aZg/JFSEsT/B3G8zlJe/EU4EkJK74hpqsjEg==
+  dependencies:
+    "@types/node" "*"
+    playwright-core "1.26.0"
+
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.8.3.tgz#3802ddd21a50a949b6721ddd72da36e67e7f1b2d"
@@ -843,10 +851,10 @@
     uuid "^8.3.2"
     whatwg-url "^9.1.0"
 
-"@virtualstate/navigation@^1.0.1-alpha.111":
-  version "1.0.1-alpha.111"
-  resolved "https://registry.yarnpkg.com/@virtualstate/navigation/-/navigation-1.0.1-alpha.111.tgz#1f127476c729326a209b404703c67544452298ee"
-  integrity sha512-iwqXpnslsku1UUo4JdTtwLAAjZ/RHcPK+ezVhjfC1dHoh30Jg6AHxFsJYN80J0FBsN05ABchFSpnPj+H8qaZ0g==
+"@virtualstate/navigation@^1.0.1-alpha.154":
+  version "1.0.1-alpha.154"
+  resolved "https://registry.yarnpkg.com/@virtualstate/navigation/-/navigation-1.0.1-alpha.154.tgz#31066ac5b892323cd648ae942f782239e2b99384"
+  integrity sha512-OUShzVzshvlMTizt9+iyNV1ZO+v6DKiuOAPFmBfoC7TXHmWtgkcI56dqv1McXPaODIPQs0wzbElKTOUdaXkgkA==
   dependencies:
     abort-controller "^3.0.0"
     uuid "^8.3.2"
@@ -2751,6 +2759,11 @@ pkg-dir@^4.2.0:
   integrity sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==
   dependencies:
     find-up "^4.0.0"
+
+playwright-core@1.26.0:
+  version "1.26.0"
+  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.26.0.tgz#850228f0638d410a5cdd69800d552f60e4d295cd"
+  integrity sha512-p8huU8eU4gD3VkJd3DA1nA7R3XA6rFvFL+1RYS96cSljCF2yJE9CWEHTPF4LqX8KN9MoWCrAfVKP5381X3CZqg==
 
 preact@^10.7.3:
   version "10.10.6"

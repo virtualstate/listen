@@ -1,10 +1,9 @@
-import {FetchListenerFn} from "../fetch-listener";
+import {FetchListener, FetchListenerFn} from "../fetch-listener";
 
 declare var Deno: unknown;
 declare var Bun: unknown;
 
-export async function listen(fn: FetchListenerFn) {
-
+export async function listen(fn: FetchListenerFn): Promise<FetchListener> {
     /* c8 ignore start */
     if (typeof Deno !== "undefined") {
         const module = await import("./deno");
@@ -18,5 +17,6 @@ export async function listen(fn: FetchListenerFn) {
         const module = await import("./node");
         return module.listen(fn);
     }
-
+    const module = await import("./memory");
+    return module.listen(fn);
 }

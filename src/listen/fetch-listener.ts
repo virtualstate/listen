@@ -10,8 +10,19 @@ export interface FetchListenerFn {
     (event: FetchEvent): void | Response | Promise<void | Response>;
 }
 
+
 const globalFetch = fetch;
 export type FetchFn = typeof globalFetch;
+
+export interface FetchListener {
+    url: string;
+    close(): Promise<void>;
+    fetch: FetchFn;
+}
+
+export interface FetchListenFn {
+    (fn: FetchListenerFn): Promise<FetchListener>;
+}
 
 const InMemoryFetch = Symbol.for("@virtualstate/listen/fetch/in-memory");
 

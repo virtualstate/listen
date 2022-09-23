@@ -1,5 +1,6 @@
 import { test } from "./test";
-import {isInMemoryFetch, listen, toResponse} from "../../listen";
+import {FetchListenFn, isInMemoryFetch, listen, toResponse} from "../../listen";
+import {listen as memory} from "../../listen/runtime/memory";
 import { h } from "@virtualstate/focus";
 
 export interface AppOptions {
@@ -23,44 +24,40 @@ export async function *App({ request, text }: AppOptions) {
     console.log("Finished App", request.method, request.url);
 }
 
-const { url, close, fetch } = await listen(async event => {
-    let text;
-    const { request } = event;
-    const { method } = request;
-    if (method !== "GET" && method !== "GET") {
-        try {
-            text = await request.text();
-        } catch {}
-    }
-    event.respondWith(
-        toResponse(
-            <App
-                request={request}
-                text={text}
-            />
+async function runTest(listen: FetchListenFn) {
+    const { url, close, fetch } = await listen(async event => {
+        let text;
+        const { request } = event;
+        const { method } = request;
+        if (method !== "GET" && method !== "GET") {
+            try {
+                text = await request.text();
+            } catch {}
+        }
+        event.respondWith(
+            toResponse(
+                <App
+                    request={request}
+                    text={text}
+                />
+            )
         )
-    )
-});
+    });
 
-
-await test(App, url);
-
-declare var Bun: unknown;
-if (typeof Bun !== "undefined") {
-    if (!isInMemoryFetch(fetch) || process.env.BUN_IN_MEMORY_FETCH) {
-        console.log("Starting in memory tests", isInMemoryFetch(fetch));
-        await test(App, url, fetch);
-        console.log("Finished in memory tests");
-    }
-} else {
     console.log("Starting in memory tests", isInMemoryFetch(fetch));
     await test(App, url, fetch);
     console.log("Finished in memory tests");
+
+    if (typeof window === "undefined" && listen !== memory) {
+        await test(App, url);
+    }
+
+    console.log("Closing server");
+    await close();
+    console.log("Closed server");
 }
 
-
-console.log("Closing server");
-await close();
-console.log("Closed server");
+await runTest(memory);
+await runTest(listen);
 
 export default 1;

@@ -26,7 +26,7 @@ interface RequestOptions {
         }
     }
 
-    const { url, close } = await listen(
+    const { url, close, fetch } = await listen(
         event => toResponse(<App request={event.request} />)
     );
 
@@ -35,6 +35,7 @@ interface RequestOptions {
         echo: [echo]
     } = descendants(
         <Fetch
+            fetch={fetch}
             url={url}
             method="POST"
             body={JSON.stringify({
@@ -45,8 +46,6 @@ interface RequestOptions {
     const body = properties(await echo);
     console.log(body);
     if (body.random !== random) throw new Error("Expected body to contain random");
-
-
 
     await close();
 }

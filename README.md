@@ -10,7 +10,7 @@ Fetch listener
 
 ### Test Coverage
 
- ![97.41%25 lines covered](https://img.shields.io/badge/lines-97.41%25-brightgreen) ![97.41%25 statements covered](https://img.shields.io/badge/statements-97.41%25-brightgreen) ![97.91%25 functions covered](https://img.shields.io/badge/functions-97.91%25-brightgreen) ![91.83%25 branches covered](https://img.shields.io/badge/branches-91.83%25-brightgreen)
+ ![96.99%25 lines covered](https://img.shields.io/badge/lines-96.99%25-brightgreen) ![96.99%25 statements covered](https://img.shields.io/badge/statements-96.99%25-brightgreen) ![96.15%25 functions covered](https://img.shields.io/badge/functions-96.15%25-brightgreen) ![91.02%25 branches covered](https://img.shields.io/badge/branches-91.02%25-brightgreen)
 
 [//]: # (badges)
 
