@@ -2,14 +2,19 @@ import {defer} from "@virtualstate/promise";
 import {isPromise, ok} from "../is";
 
 export interface FetchEvent {
+    type: "fetch";
     request: Request;
     respondWith(response: Promise<Response> | Response): void
+    signal?: {
+        aborted: boolean;
+    };
+    [key: string]: unknown;
+    [key: number]: unknown;
 }
 
 export interface FetchListenerFn {
     (event: FetchEvent): void | Response | Promise<void | Response>;
 }
-
 
 const globalFetch = fetch;
 export type FetchFn = typeof globalFetch;
@@ -75,6 +80,7 @@ export function createFetch(baseURL: string, fn: FetchListenerFn) {
 export async function dispatchEvent(request: Request, fn: FetchListenerFn): Promise<Response> {
     const deferredResponse = defer<Response>();
     const event: FetchEvent = {
+        type: "fetch",
         request,
         respondWith
     };

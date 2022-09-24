@@ -4,6 +4,7 @@ try {
     await import("./example");
     await import("./example-jsx");
     await import("./paired");
+    await import("./route");
 } catch (error) {
     console.error(error);
     if (typeof process !== "undefined") {

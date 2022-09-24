@@ -1,6 +1,6 @@
 /* c8 ignore start */
-import {createFetch, dispatchEvent, FetchListenerFn} from "../fetch-listener";
-import {isPromise} from "../../is";
+import {createFetch, dispatchEvent, FetchEvent, FetchListenerFn} from "../fetch-listener";
+import {isPromise, ok} from "../../is";
 
 interface DenoConnection {
     close?(): void;
@@ -55,9 +55,11 @@ export async function listen(fn: FetchListenerFn) {
             abortController.signal.addEventListener("abort", () => {
                 try {
                     http.close();
-                } catch { }
+                } catch {
+                }
             })
             for await (const event of http) {
+                ok<FetchEvent>(event);
                 const maybe = fn(event);
                 if (isPromise(maybe)) {
                     void maybe
@@ -73,6 +75,7 @@ export async function listen(fn: FetchListenerFn) {
             }
         }
     })();
+    ok<Promise<void>>(onComplete);
     onComplete.catch(error => void error);
     return {
         url,

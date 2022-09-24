@@ -851,10 +851,10 @@
     uuid "^8.3.2"
     whatwg-url "^9.1.0"
 
-"@virtualstate/navigation@^1.0.1-alpha.154":
-  version "1.0.1-alpha.154"
-  resolved "https://registry.yarnpkg.com/@virtualstate/navigation/-/navigation-1.0.1-alpha.154.tgz#31066ac5b892323cd648ae942f782239e2b99384"
-  integrity sha512-OUShzVzshvlMTizt9+iyNV1ZO+v6DKiuOAPFmBfoC7TXHmWtgkcI56dqv1McXPaODIPQs0wzbElKTOUdaXkgkA==
+"@virtualstate/navigation@^1.0.1-alpha.159":
+  version "1.0.1-alpha.159"
+  resolved "https://registry.yarnpkg.com/@virtualstate/navigation/-/navigation-1.0.1-alpha.159.tgz#793246ff773c2bd5bc1e37beda475a2a7d18fb27"
+  integrity sha512-nkC+yuk1jdxSt7nfw1Bz1X3pOo9xkSAfYkPyraAhYgwwAQOcTNDlLCSFPPrPAzI1s4pVsnUmDe7Oifa2Tda2+A==
   dependencies:
     abort-controller "^3.0.0"
     uuid "^8.3.2"
