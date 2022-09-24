@@ -1,6 +1,4 @@
-import { Router, transitionEvent } from "@virtualstate/navigation/routes";
-import { getRouter, route, listen} from "../../route";
-import { } from "../../listen/runtime/memory";
+import {route, listen} from "../../routes";
 import {ok} from "../../is";
 
 {

@@ -12,8 +12,8 @@
       "tests": [
         "./esnext/tests/index.d.ts"
       ],
-      "route": [
-        "./esnext/route/index.d.ts"
+      "routes": [
+        "./esnext/routes/index.d.ts"
       ]
     }
   },
@@ -23,7 +23,7 @@
   "exports": {
     ".": "./esnext/index.js",
     "./tests": "./esnext/tests/index.js",
-    "./route": "./esnext/route/index.js"
+    "./routes": "./esnext/routes/index.js"
   },
   "repository": {
     "type": "git",
