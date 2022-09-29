@@ -1,4 +1,4 @@
-import type {IncomingMessage} from "http";
+import type {IncomingMessage} from "node:http";
 import {createReadableStreamFromIterable} from "../stream";
 import {isArray, ok} from "../../is";
 import {createFetch, dispatchEvent, FetchListener, FetchListenerFn} from "../fetch-listener";

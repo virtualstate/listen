@@ -1,7 +1,8 @@
-import "./correct-import-extensions.js";
 import { promises as fs } from "fs";
 import { dirname, resolve } from "path";
 
+await import("./correct-import-extensions.js");
+await import("./workerd-tests.js");
 
 const { pathname } = new URL(import.meta.url);
 const cwd = resolve(dirname(pathname), "..");

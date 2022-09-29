@@ -5,6 +5,7 @@ export interface FetchEvent {
     type: "fetch";
     request: Request;
     respondWith(response: Promise<Response> | Response): void
+    waitUntil?(promise: Promise<void | unknown>): void
     signal?: {
         aborted: boolean;
     };
