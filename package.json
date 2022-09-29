@@ -98,6 +98,8 @@
     "test:deno:r": "export $(cat .env | xargs) && deno run -r --allow-write --allow-env --allow-read --allow-net --import-map=import-map-deno.json esnext/tests/index.js",
     "test:node:inspect": "yarn build && export $(cat .env | xargs) && node --enable-source-maps --inspect-brk esnext/tests/index.js",
     "test:deno:inspect": "yarn build && export $(cat .env | xargs) && deno run --allow-write --allow-env --allow-read --allow-net --import-map=import-map-deno.json --inspect-brk esnext/tests/index.js",
-    "coverage": "export $(cat .env | xargs) && c8 node esnext/tests/index.js && yarn postbuild"
+    "coverage": "export $(cat .env | xargs) && c8 node esnext/tests/index.js && yarn postbuild",
+    "test:workerd:compile": "workerd compile workerd-tests.capnp > workerd-tests",
+    "test:workerd": "yarn test:workerd:compile && ./workerd-tests --experimental"
   }
 }
