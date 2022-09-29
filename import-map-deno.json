@@ -6,6 +6,7 @@
     "@virtualstate/examples": "https://cdn.skypack.dev/@virtualstate/examples",
     "@virtualstate/fringe": "https://cdn.skypack.dev/@virtualstate/fringe",
     "@virtualstate/focus": "https://cdn.skypack.dev/@virtualstate/focus",
+    "@virtualstate/composite-key": "https://cdn.skypack.dev/@virtualstate/composite-key",
     "@virtualstate/navigation": "https://cdn.skypack.dev/@virtualstate/navigation",
     "@virtualstate/navigation/routes": "./node_modules/@virtualstate/navigation/esnext/routes/index.js",
     "@virtualstate/hooks": "https://cdn.skypack.dev/@virtualstate/hooks",
