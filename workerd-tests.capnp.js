@@ -8,11 +8,12 @@
 export const test = {
     modules: [
         {
-            name: "esnext-workerd/tests/workerd/server.js",
+            name: "esnext-workerd/tests/workerd/server-jsx.js",
             esModule: {
-                embed: "esnext-workerd/tests/workerd/server.js"
+                embed: "esnext-workerd/tests/workerd/server-jsx.js"
             }
         }
     ],
     compatibilityDate: "2022-09-16",
+    compatibilityFlags: ["streams_enable_constructors"]
 };
