@@ -8,16 +8,6 @@ const { pathname } = new URL(import.meta.url);
 const cwd = resolve(dirname(pathname), "..");
 
 {
-  // /Volumes/Extreme/Users/fabian/src/virtualstate/esnext/tests/app-history.playwright.wpt.js
-  // /Volumes/Extreme/Users/fabian/src/virtualstate/app-history/esnext/tests/app-history.playwright.wpt.js
-
-  console.log({
-    cwd,
-    path:
-      `/Volumes/Extreme/Users/fabian/src/virtualstate/app-history/esnext/tests/app-history.playwright.wpt.js` ===
-      `${cwd}/esnext/tests/app-history.playwright.wpt.js`,
-    p: `${cwd}/esnext/tests/app-history.playwright.wpt.js`,
-  });
 
   // const bundle = await rollup({
   //   input: "./esnext/tests/index.js",

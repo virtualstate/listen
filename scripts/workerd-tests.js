@@ -35,11 +35,11 @@ async function getImportUrls(moduleUrl, seen) {
         .filter(Boolean)
         .map(url => resolve(directory, url).replace(`${cwd}/`, ""))
 
-    console.log("this one", {
-        statements,
-        urls,
-        moduleUrl
-    });
+    // console.log("this one", {
+    //     statements,
+    //     urls,
+    //     moduleUrl
+    // });
 
     const nextSeen = new Set([
         ...seen,

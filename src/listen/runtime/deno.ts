@@ -1,5 +1,5 @@
 /* c8 ignore start */
-import {createFetch, dispatchEvent, FetchEvent, FetchListenerFn} from "../fetch-listener";
+import {createFetch, FetchEvent, FetchListenerFn} from "../fetch-listener";
 import {isPromise, ok} from "../../is";
 
 interface DenoConnection {

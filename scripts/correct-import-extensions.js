@@ -17,10 +17,10 @@ async function isDirectory(file) {
 let newModules = [];
 
 async function importPaths(buildPath, importMapPath = process.env.IMPORT_MAP, readPath = buildPath) {
-    console.log({
-        buildPath,
-        readPath
-    })
+    // console.log({
+    //     buildPath,
+    //     readPath
+    // })
 
     const filePaths = await FileHound.create()
         .paths(readPath)
@@ -49,7 +49,7 @@ async function importPaths(buildPath, importMapPath = process.env.IMPORT_MAP, re
             .map(() => "..")
             .join("/");
 
-        console.log("Reading", { filePath });
+        // console.log("Reading", { filePath });
         const initialContents = await fs.readFile(filePath, "utf-8");
 
         const importMapSource = importMapPath
@@ -76,7 +76,7 @@ async function importPaths(buildPath, importMapPath = process.env.IMPORT_MAP, re
             );
         } while (contents !== previousContents);
 
-        console.log({ times });
+        // console.log({ times });
 
         await fs.writeFile(filePath, contents, "utf-8");
 
@@ -93,7 +93,7 @@ async function importPaths(buildPath, importMapPath = process.env.IMPORT_MAP, re
         }
 
         async function replaceStatement(contents, statement) {
-            console.log({ filePath, statement });
+            // console.log({ filePath, statement });
             const initial = statement.match(/"(.+)"/)[1];
 
             let url = initial;
@@ -121,7 +121,7 @@ async function importPaths(buildPath, importMapPath = process.env.IMPORT_MAP, re
                 const moduleTargetPath = `${buildPath}/${moduleName}`;
                 url = `${srcShift}/${moduleName}/${fileName}`;
 
-                console.log({ filePath, statement, importMapReplacement, moduleName, fileName, moduleUrl, url });
+                // console.log({ filePath, statement, importMapReplacement, moduleName, fileName, moduleUrl, url });
 
                 if (!await isDirectory(moduleTargetPath)) {
                     await fs.cp(`./node_modules/${moduleName}`, moduleTargetPath, {
@@ -147,7 +147,7 @@ async function importPaths(buildPath, importMapPath = process.env.IMPORT_MAP, re
 
             const replacement = await getResolvedStatUrl(url);
 
-            console.log({ url, importMapReplacement, importMap, replacement })
+            // console.log({ url, importMapReplacement, importMap, replacement })
 
             return contents.replace(
                 statement,
@@ -163,10 +163,10 @@ async function importPaths(buildPath, importMapPath = process.env.IMPORT_MAP, re
                     isFile(path.resolve(path.dirname(filePath), url + ".js")),
                     isFile(path.resolve(path.dirname(filePath), url + "/index.js")),
                 ]);
-                console.log({
-                    url,
-                    existing, js, index
-                })
+                // console.log({
+                //     url,
+                //     existing, js, index
+                // })
                 if (existing) {
                     return url;
                 }

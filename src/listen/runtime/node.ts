@@ -2,7 +2,7 @@ import type {IncomingMessage} from "node:http";
 import {createReadableStreamFromIterable} from "../stream";
 import {isArray, ok} from "../../is";
 import {createFetch, dispatchEvent, FetchListener, FetchListenerFn} from "../fetch-listener";
-import {createServer, Server, ServerResponse} from "http";
+import type { Server, ServerResponse} from "node:http";
 
 function fromIncomingMessage(message: IncomingMessage, baseUrl?: string) {
     const url = new URL(
@@ -52,6 +52,8 @@ function getHostname(server: Server) {
 }
 
 export async function listen(fn: FetchListenerFn): Promise<FetchListener> {
+    const { createServer } = await import("node:http");
+
     const server = createServer((message, response) => {
         void onMessage(message, response) // Allow throwing unhandled rejection
     })
