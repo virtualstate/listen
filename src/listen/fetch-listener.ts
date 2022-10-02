@@ -57,13 +57,6 @@ export function createFetch(baseURL: string, fn: FetchListenerFn) {
     init?: RequestInit
   ) {
     const request = getRequest();
-    if (!request.headers.has("Host")) {
-      const { host } = new URL(request.url);
-      request.headers.set("Host", host);
-    }
-    if (!request.headers.has("User-Agent")) {
-      request.headers.set("User-Agent", "internal");
-    }
     return dispatchEvent(request, fn);
 
     function getRequest() {
@@ -73,7 +66,15 @@ export function createFetch(baseURL: string, fn: FetchListenerFn) {
       if (typeof input === "string" && baseURL) {
         input = new URL(input, baseURL);
       }
-      return new Request(input, init);
+      const request = new Request(input, init);
+      if (!request.headers.has("Host")) {
+        const { host } = new URL(request.url);
+        request.headers.set("Host", host);
+      }
+      if (!request.headers.has("User-Agent")) {
+        request.headers.set("User-Agent", "internal");
+      }
+      return request;
     }
   }
 }
