@@ -29,7 +29,7 @@ async function runTest(listen: FetchListenFn) {
         let text;
         const { request } = event;
         const { method } = request;
-        if (method !== "GET" && method !== "GET") {
+        if (method !== "GET" && method !== "OPTIONS") {
             try {
                 text = await request.text();
             } catch {}

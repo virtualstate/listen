@@ -5,7 +5,7 @@ export function toAsyncString(input: Body): TheAsyncThing<string> {
 
     function createIterable() {
         /* c8 ignore start */ // bun only
-        if (!input.body?.pipeThrough) {
+        if (typeof TextDecoderStream === "undefined" || !input.body?.pipeThrough) {
             return {
                 async *[Symbol.asyncIterator]() {
                     yield input.text();

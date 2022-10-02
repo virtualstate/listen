@@ -8,15 +8,19 @@ function createPullUnderlyingSourceFromIterable(iterable: AsyncIterable<unknown>
             iterator = iterable[Symbol.asyncIterator]();
         },
         async pull(controller) {
-            const { value, done } = await iterator.next();
-            if (done) {
-                controller.close();
-            } else {
-                let enqueue = value;
-                if (typeof enqueue === "string") {
-                    enqueue = encoder.encode(enqueue);
+            try {
+                const { value, done } = await iterator.next();
+                if (done) {
+                    controller.close();
+                } else {
+                    let enqueue = value;
+                    if (typeof enqueue === "string") {
+                        enqueue = encoder.encode(enqueue);
+                    }
+                    controller.enqueue(enqueue);
                 }
-                controller.enqueue(enqueue);
+            } catch (error) {
+                throw error;
             }
         },
         async cancel() {

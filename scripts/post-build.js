@@ -1,11 +1,36 @@
 import { promises as fs } from "fs";
 import { dirname, resolve } from "path";
 
-await import("./correct-import-extensions.js");
-await import("./workerd-tests.js");
+// await import("./correct-import-extensions.js");
+// await import("./workerd-tests.js");
 
-const { pathname } = new URL(import.meta.url);
-const cwd = resolve(dirname(pathname), "..");
+const { pack } = await import("../../impack/esnext/index.js");
+
+await pack({
+  argv: ["--silent"],
+  paths: {
+    directory: "esnext"
+  }
+});
+
+await fs.rmdir("esnext-workerd").catch(() => {});
+await fs.cp("esnext", "esnext-workerd", {
+  recursive: true
+})
+
+const capnp = await pack({
+  argv: ["--silent"],
+  paths: {
+    directory: "esnext-workerd",
+    importMap: "import-map-workerd.json",
+    capnpTemplate: "workerd-tests.template.capnp",
+    entrypoint: "esnext-workerd/tests/workerd/server.js"
+  }
+});
+
+if (capnp) {
+  await fs.writeFile("workerd-tests.capnp", capnp, "utf-8");
+}
 
 {
 

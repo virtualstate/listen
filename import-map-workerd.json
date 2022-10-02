@@ -12,10 +12,10 @@
     "urlpattern-polyfill": "./node_modules/urlpattern-polyfill/dist/index.js",
     "abort-controller": "./node_modules/abort-controller/polyfill.mjs",
     "uuid": "./node_modules/uuid/dist/esm-browser/index.js",
-    "http": "./esnext/noop.js",
-    "perf_hooks": "./esnext/noop.js",
-    "node:http": "./esnext/noop.js",
-    "node:crypto": "./esnext/noop.js",
-    "@virtualstate/navigation/event-target": "./esnext/noop.js"
+    "http": "./esnext-workerd/noop.js",
+    "perf_hooks": "./esnext-workerd/noop.js",
+    "node:http": "./esnext-workerd/noop.js",
+    "node:crypto": "./esnext-workerd/noop.js",
+    "@virtualstate/navigation/event-target": "./esnext-workerd/noop.js"
   }
 }

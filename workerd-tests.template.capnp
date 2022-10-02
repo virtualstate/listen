@@ -30,9 +30,7 @@ const config :Workerd.Config = (
 # The compatibilityDate is required. For more details on compatibility dates see:
 #   https://developers.cloudflare.com/workers/platform/compatibility-dates/
 
-# const test :Workerd.Worker = (
-#   modules = [
-#    (name = "esnext-workerd/tests/workerd/test.js", esModule = embed "esnext-workerd/tests/workerd/test.js")
-#   ],
-#   compatibilityDate = "2022-09-16",
-# );
+const test :Workerd.Worker = (
+   modules = [],
+   compatibilityDate = "2022-09-16",
+ );
