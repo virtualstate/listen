@@ -50,17 +50,8 @@ export function createFetch(baseURL: string, fn: FetchListenerFn) {
         fn[InMemoryFetch] = true;
     }
 
-    async function fetchInMemory(input: RequestInfo | URL, init?: RequestInit) {
-        if (typeof input === "string") {
-            input = new URL(
-                input,
-                baseURL
-            );
-        }
-        const request = new Request(
-            input,
-            init
-        );
+    async function fetchInMemory(input: Request | RequestInfo | URL, init?: RequestInit) {
+        const request = getRequest();
         if (!request.headers.has("Host")) {
             const { host } = new URL(request.url);
             request.headers.set("Host", host);
@@ -75,6 +66,22 @@ export function createFetch(baseURL: string, fn: FetchListenerFn) {
             request,
             fn
         );
+
+        function getRequest() {
+            if (input instanceof Request) {
+                return input;
+            }
+            if (typeof input === "string" && baseURL) {
+                input = new URL(
+                    input,
+                    baseURL
+                );
+            }
+            return new Request(
+                input,
+                init
+            );
+        }
     }
 }
 

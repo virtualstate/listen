@@ -33,4 +33,7 @@ const config :Workerd.Config = (
 const test :Workerd.Worker = (
    modules = [],
    compatibilityDate = "2022-09-16",
- );
+   compatibilityFlags = [
+     "streams_enable_constructors"
+   ]
+);

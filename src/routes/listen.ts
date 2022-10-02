@@ -1,6 +1,12 @@
 import {FetchEvent, listen as core} from "../listen";
 import {getRouter} from "./route";
 import {Router, transitionEvent} from "@virtualstate/navigation/routes";
+import {createFetch as createDispatcher } from "../listen/fetch-listener";
+
+export function createFetch(router = getRouter()) {
+    const listener = createListener(router);
+    return createDispatcher(undefined, listener);
+}
 
 export function createListener(router = getRouter()) {
     const resolver = new Router<FetchEvent>();

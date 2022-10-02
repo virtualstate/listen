@@ -23,19 +23,41 @@ export async function listen(fn: FetchListenerFn): Promise<FetchListener> {
     };
 
     function onEvent(event: FetchEvent) {
-        const maybe = fn(event);
+
+        const maybe = handle();
+
         if (isPromise(maybe)) {
-            const promise = maybe
-                .then(value => {
-                    if (value instanceof Response) {
-                        event.respondWith(value)
-                    }
-                })
-                .catch(error => void error);
-            event.waitUntil(promise);
+            maybe.catch(error => {
+                console.error("Unhandled error");
+                console.error(error);
+            })
         }
-        if (maybe instanceof Response) {
-            event.respondWith(maybe);
+
+        function handle() {
+            try {
+                const maybe = fn(event);
+                if (isPromise(maybe)) {
+                    const promise = maybe
+                        .then(value => {
+                            if (value instanceof Response) {
+                                event.respondWith(value)
+                            }
+                        })
+                        .catch(onError);
+                    event.waitUntil?.(promise);
+                    return promise;
+                }
+                if (maybe instanceof Response) {
+                    return event.respondWith(maybe);
+                }
+            } catch (error) {
+                return onError(error)
+            }
+        }
+
+        function onError(error: unknown) {
+            console.error(error);
+            return event.respondWith(new Response("", { status: 500 }));
         }
     }
 

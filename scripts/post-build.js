@@ -4,7 +4,7 @@ import { dirname, resolve } from "path";
 // await import("./correct-import-extensions.js");
 // await import("./workerd-tests.js");
 
-const { pack } = await import("../../impack/esnext/index.js");
+const { pack } = await import("@virtualstate/impack");
 
 await pack({
   argv: ["--silent"],
@@ -24,7 +24,7 @@ const capnp = await pack({
     directory: "esnext-workerd",
     importMap: "import-map-workerd.json",
     capnpTemplate: "workerd-tests.template.capnp",
-    entrypoint: "esnext-workerd/tests/workerd/server.js"
+    entrypoint: "esnext-workerd/tests/workerd/server-export.js"
   }
 });
 
