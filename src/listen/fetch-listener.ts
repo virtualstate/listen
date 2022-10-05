@@ -89,21 +89,25 @@ export async function dispatchEvent(
     request,
     respondWith,
   };
-  const maybe = fn(event);
+  try {
+    const maybe = fn(event);
 
-  /* c8 ignore start */
-  if (isPromise(maybe)) {
-    maybe
-      .then((result) => {
-        if (result instanceof Response) {
-          respondWith(result);
-        }
-      })
-      .catch((error) => void error); // TODO: Note or handle, allows for abort
-  } else if (maybe instanceof Response) {
-    respondWith(maybe);
+    /* c8 ignore start */
+    if (isPromise(maybe)) {
+      maybe
+          .then((result) => {
+            if (result instanceof Response) {
+              respondWith(result);
+            }
+          })
+          .catch((error) => void error); // TODO: Note or handle, allows for abort
+    } else if (maybe instanceof Response) {
+      respondWith(maybe);
+    }
+    /* c8 ignore end */
+  } catch (error) {
+    onError(error);
   }
-  /* c8 ignore end */
 
   return deferredResponse.promise;
 
@@ -112,5 +116,10 @@ export async function dispatchEvent(
       return void response.then(respondWith);
     }
     deferredResponse.resolve(response);
+  }
+
+  function onError(error: unknown) {
+    console.error(error);
+    return respondWith(new Response("", { status: 500 }));
   }
 }
