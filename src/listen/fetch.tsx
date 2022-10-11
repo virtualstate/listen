@@ -58,12 +58,7 @@ export async function* Fetch(
     const response = await fetch(url.toString(), options);
     /* c8 ignore start */ // flaky servers only
     if (!response.ok) {
-      if (typeof retries !== "number") {
-        return yield* withOptions({
-          ...options,
-          retries: DEFAULT_RETRIES,
-        });
-      } else if (retries > 0) {
+      if (typeof retries === "number" && retries > 0) {
         return yield* withOptions({
           ...options,
           retries: retries - 1,
