@@ -36,7 +36,7 @@
   "author": "Fabian Cook <hello@fabiancook.dev>",
   "license": "MIT",
   "dependencies": {
-    "@virtualstate/focus": "^1.4.9",
+    "@virtualstate/focus": "^1.4.10-alpha.4",
     "@virtualstate/promise": "^1.2.1",
     "abort-controller": "^3.0.0",
     "uuid": "^8.3.2",

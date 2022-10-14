@@ -2,7 +2,7 @@ import { test } from "./test";
 import {
   FetchListenFn,
   isInMemoryFetch,
-  listen,
+  listen, respondWith,
   toResponse,
 } from "../../listen";
 import { listen as memory } from "../../listen/runtime/memory";
@@ -39,7 +39,7 @@ async function runTest(listen: FetchListenFn) {
         text = await request.text();
       } catch {}
     }
-    event.respondWith(toResponse(<App request={request} text={text} />));
+    respondWith(event, <App request={request} text={text} />);
   });
 
   console.log("Starting in memory tests", isInMemoryFetch(fetch));

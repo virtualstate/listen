@@ -1,14 +1,17 @@
 import { defer } from "@virtualstate/promise";
 import { isPromise, ok } from "../is";
 
-export interface FetchEvent {
-  type: "fetch";
+export interface FetchEventCore {
   request: Request;
   respondWith(response: Promise<Response> | Response): void;
   waitUntil?(promise: Promise<void | unknown>): void;
   signal?: {
     aborted: boolean;
   };
+}
+
+export interface FetchEvent extends FetchEventCore {
+  type: "fetch";
   [key: string]: unknown;
   [key: number]: unknown;
 }

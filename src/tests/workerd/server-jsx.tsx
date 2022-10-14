@@ -1,5 +1,5 @@
 import { listen } from "../../listen/runtime/workerd";
-import { toResponse } from "../../listen";
+import { respondWith } from "../../listen";
 import { h } from "@virtualstate/focus";
 
 async function* App() {
@@ -19,6 +19,7 @@ async function* App() {
   }
 }
 
-void listen(({ request }) => {
-  return toResponse(<App request={request} />);
+void listen(event => {
+  const { request } = event;
+  return respondWith(event, <App request={request} />);
 });

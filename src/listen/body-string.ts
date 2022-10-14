@@ -1,4 +1,5 @@
 import { TheAsyncThing, anAsyncThing } from "@virtualstate/promise/the-thing";
+import {isAsyncIterable, ok} from "../is";
 
 export function toAsyncString(input: Body): TheAsyncThing<string> {
   return anAsyncThing(createIterable());
@@ -16,20 +17,36 @@ export function toAsyncString(input: Body): TheAsyncThing<string> {
     return {
       async *[Symbol.asyncIterator]() {
         const decoder = new TextDecoder();
-        const stream = input.body;
-        const reader = stream.getReader();
-        let result;
-        try {
-          do {
-            result = await reader.read();
-            if (result.value) {
-              yield decoder.decode(result.value);
-            }
-          } while (!result.done);
-        } finally {
-          reader.releaseLock();
+        for await (const value of toAsyncIterable(input.body)) {
+          yield decoder.decode(value);
         }
       },
     };
+  }
+}
+
+function toAsyncIterable(input: ReadableStream) {
+  if (isAsyncIterable<Uint8Array>(input)) {
+    return input;
+  }
+  return {
+    [Symbol.asyncIterator](): AsyncIterator<Uint8Array> {
+      const reader = input.getReader();
+      return {
+        next() {
+          const promise = reader.read();
+          ok<Promise<IteratorResult<Uint8Array>>>(promise);
+          return promise;
+        },
+        async return() {
+          reader.releaseLock()
+          return { done: true, value: undefined }
+        },
+        async throw(error: unknown) {
+          await reader.cancel(error)
+          return { done: true, value: undefined }
+        }
+      }
+    }
   }
 }

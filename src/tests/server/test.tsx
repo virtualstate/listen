@@ -163,6 +163,17 @@ export async function test(
     ok(a === random);
   }
 
+  {
+    const response = await fetch(url, {
+      headers: {
+        Accept: "text/html"
+      }
+    });
+    const text = await response.text();
+    console.log(text);
+    ok(text.replace(/\s/g, "").includes("<p>Loaded</p>"));
+  }
+
   console.log("Finished JSX server tests");
 }
 

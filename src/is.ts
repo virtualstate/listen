@@ -1,4 +1,9 @@
 /* c8 ignore start */
+
+export function isLike<T>(value: unknown): value is T {
+  return !!value;
+}
+
 export function isArray<T>(value: unknown): value is T[];
 export function isArray(value: unknown): value is unknown[];
 export function isArray(value: unknown): boolean {
@@ -21,4 +26,11 @@ export function ok(value: unknown, message?: string): asserts value {
   if (!value) {
     throw new Error(message ?? "Expected value");
   }
+}
+
+export function isAsyncIterable<T>(value: unknown): value is AsyncIterable<T> {
+  return !!(
+      isLike<AsyncIterable<unknown>>(value) &&
+      typeof value[Symbol.asyncIterator] === "function"
+  );
 }

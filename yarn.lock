@@ -807,10 +807,15 @@
     iterable "^5.6.0"
     microtask-collector "^3.1.0"
 
-"@virtualstate/focus@^1.0.1", "@virtualstate/focus@^1.1.1", "@virtualstate/focus@^1.4.9":
+"@virtualstate/focus@^1.0.1", "@virtualstate/focus@^1.1.1":
   version "1.4.9"
   resolved "https://registry.yarnpkg.com/@virtualstate/focus/-/focus-1.4.9.tgz#cca2045ac285cb9588b763377df6966c3c8fd352"
   integrity sha512-NHMPQWHh8AxDpYJSfSGEUz6BixtF54BlICje7zB5vKBxnneZs2jPMk1vOnGMrKQqnT6s+UU91l+kG/xZ4sVvTw==
+
+"@virtualstate/focus@^1.4.10-alpha.4":
+  version "1.4.10-alpha.4"
+  resolved "https://registry.yarnpkg.com/@virtualstate/focus/-/focus-1.4.10-alpha.4.tgz#3e3f36ee89e06e6324dde944eb59b5fdf036fd69"
+  integrity sha512-6MvDFBLYje0+R4xa32Ka8lT2NqPY6mgEAltblfKIy/LeJTVoc/OoUXzQzH8eNwkk1q2ATR2zmdpWlQGUf4RlVw==
 
 "@virtualstate/fringe@^2.46.1", "@virtualstate/fringe@^2.48.1":
   version "2.48.1"

@@ -1,4 +1,4 @@
-import { toJSON } from "@virtualstate/focus";
+import { toJSON, toString } from "@virtualstate/focus";
 
 function createPullUnderlyingSourceFromIterable(
   iterable: AsyncIterable<unknown>
@@ -52,6 +52,16 @@ async function* toJSONArray(parts: AsyncIterable<string>) {
   yield "]";
 }
 
-export function toReadableStream(node: unknown) {
+export function toJSONReadableStream(node: unknown) {
   return createReadableStreamFromIterable(toJSONArray(toJSON(node)));
+}
+
+export function toHTMLReadableStream(node: unknown) {
+  return createReadableStreamFromIterable({
+    async *[Symbol.asyncIterator]() {
+      yield await toString(node, {
+        space: "  "
+      });
+    }
+  })
 }
